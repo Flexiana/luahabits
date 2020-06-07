@@ -1,5 +1,25 @@
 #!/usr/bin/env lua
 
+-- Luahabit is a habit tracker
+--
+-- Language: Lua
+--
+-- TODO: Write readme.txt
+-- TODO: Add license
+-- TODO: Connect to the database
+-- TODO: Get active habits
+-- TODO: Add version to database (for migrations)
+-- TODO: Database migrations
+-- TODO: Insert habit item
+-- TODO: Edit/Delete habit item
+-- TODO: Documentation
+-- TODO: Help
+-- ]] --
+--
+-- Documentation habit.type:
+-- 1 = daily
+-- 2 = weekly
+-- 
 
 function read_habits()
   print("All read")
