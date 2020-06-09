@@ -48,28 +48,48 @@
 -- 2 = weekly
 -- 
 
-function read_habits()
-  print("All read")
+function habitItemExistsForToday(db, id)
+  -- check Existence of Habit record for given day
+  local sqlSelect = "select * from habit_records where created_at = date('now') and habit_id = " .. id .. " limit 1"
 
+  for row in db:nrows(sqlSelect) do 
+    return true
+  end
+  return false
+end
+
+function checkHabitToday(db, id)
+  local escapedId = tostring(tonumber(id))
+  local exists = habitItemExistsForToday(db, id)
+
+  if not exists then
+    sqlInsert = "insert into habit_records (habit_id, created_at) values (" .. escapedId .. ", date('now'))"
+    db:exec(sqlInsert)
+    print("Habit tem added for today")
+  else
+    print("Habit item already exists for today")
+  end
+end
+
+function uncheckHabitToday(db, id)
+end
+
+
+function read_habits()
   local sqlite3 = require("lsqlite3")
 
-  local db = sqlite3.open_memory()
+  local myDB = sqlite3.open("./habits.sqlite3")
 
-  db:exec[[
-    CREATE TABLE test (id INTEGER PRIMARY KEY, content);
-
-    INSERT INTO test VALUES (NULL, 'Hello World');
-    INSERT INTO test VALUES (NULL, 'Hello Lua');
-    INSERT INTO test VALUES (NULL, 'Hello Sqlite3')
-  ]]
-
-  for row in db:nrows("SELECT * FROM test") do
-    print(row.id, row.content)
+  for habit in myDB:nrows("SELECT * FROM habits") do
+    print(habit.name)
   end
+
+  checkHabitToday(myDB, 1)
+
+  myDB:close()
   
   return {}
 end
 
 
-habits = read_habits()
-print(habits)
+read_habits()
